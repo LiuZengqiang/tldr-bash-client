@@ -1,6 +1,6 @@
 # tldr-bash-client
 
-* version 0.48
+* version 0.4.9
 
 ### Bash client for tldr: community driven man-by-example
 **A fully-functional [bash](https://tiswww.case.edu/php/chet/bash/bashtop.html)
@@ -16,7 +16,7 @@ Download the tldr bash script to the install location:
 
 ```bash
 loc=/usr/local/bin/tldr  # elevated privileges needed for some locations
-sudo wget -qO $loc https://4e4.win/tldr
+sudo wget -qO $loc https://good4.eu/tldr
 sudo chmod +x $loc
 ```
 
