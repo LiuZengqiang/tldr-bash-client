@@ -1,6 +1,6 @@
 # tldr-bash-client
 
-* version 0.4.9
+* version 0.4.10
 
 ### Bash client for tldr: community driven man-by-example
 **A fully-functional [bash](https://tiswww.case.edu/php/chet/bash/bashtop.html)
@@ -15,9 +15,9 @@ This client can render both the old and the new tldr markup format.
 Download the tldr bash script to the install location:
 
 ```bash
-loc=/usr/local/bin/tldr  # elevated privileges needed for some locations
-sudo wget -qO $loc https://good4.eu/tldr
-sudo chmod +x $loc
+L=/usr/local/bin/tldr  # elevated privileges needed for some locations
+sudo wget -qO $L good4.eu/tldr
+sudo chmod +x $L
 ```
 
 If the location is not in $PATH, you need to specify the path to run it.
@@ -41,7 +41,7 @@ backgrounds (last one specified will be used) and modes (more can apply):
 
 `Newline` can be added to the style list to add a newline before the element
 and `Space` to add a space at the start of the line
-(style items are separated by space, lower/uppercase mixed allowed)
+(style items are separated by space, lower/uppercase mixed allowed):
 * TLDR_TITLE_STYLE (defaults to: Newline Space Bold Yellow)
 * TLDR_DESCRIPTION_STYLE (defaults to: Space Yellow)
 * TLDR_EXAMPLE_STYLE (defaults to: Newline Space Bold Green)
@@ -50,7 +50,7 @@ and `Space` to add a space at the start of the line
 
 The Value style (above) is an Inline style: doesn't take Newline or Space
 
-Inline styles for help text: default, URL, option, platform, command, header
+Inline styles for help text: default, URL, option, platform, command, header:
 * TLDR_DEFAULT_ISTYLE (defaults to: White)
 * TLDR_URL_ISTYLE (defaults to: Yellow)
 * TLDR_HEADER_ISTYLE (defaults to: Bold)
@@ -59,19 +59,19 @@ Inline styles for help text: default, URL, option, platform, command, header
 * TLDR_COMMAND_ISTYLE (defaults to: Bold Cyan)
 * TLDR_FILE_ISTYLE (defaults to: Bold Magenta)
 
-Color/BG (Newline and Space also allowed) for error and info messages
+Color/BG (Newline and Space also allowed) for error and info messages:
 * TLDR_ERROR_COLOR (defaults to: Newline Space Red)
 * TLDR_INFO_COLOR (defaults to: Newline Space Green)
 
-How many days before freshly downloading a potentially stale page
+How many days before freshly downloading a potentially stale page:
 * TLDR_EXPIRY (defaults to 7)
-Alternative location of pages cache
+Alternative location of pages cache:
 * TLDR_CACHE (not set by default)
-Usage of 'less' or 'cat' for output (set to '0' for cat)
+Usage of 'less' or 'cat' for output (set to '0' for cat):
 * TLDR_LESS (*1* by default; if set to *0* `cat` will be used)
-Force current OS
+Force current OS or not:
 * TLDR_OS (overrides what is read by `uname -s`)
-Force preferred language: ISO639 format (2 lowercase letters)
+Force preferred language: ISO639 format (2 lowercase letters):
 * TLDR_LANG (not set by default, $LANG is used from environment)
 
 <img alt="tldr list screenshot" src="tldr-list.jpg" title="tldr list" width="600" />
@@ -81,7 +81,7 @@ When the following lines are added to `~/.bashrc` or run in the current session,
 then *tldr* will autocomplete, which means possible tldr page names will be
 suggested when tapping the **Tab** key twice on an incomplete tldr page name:
 ```
-cachedir=~/.local/share/tldr # Or whatever else the location of the tldr cache is
+cachedir=~/.local/share/tldr/pages # Or whatever else the location of the tldr cache is
 complete -W "$(q=($cachedir/*/*); sed 's@\.md @ @g' <<<${q[@]##*/})" tldr
 ```
 <img alt="tldr new markdown screenshot" src="tldr-markdown-new.jpg" title="tldr new markdown" width="600" />
