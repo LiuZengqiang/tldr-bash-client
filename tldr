@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set +vx -o pipefail
 [[ $- = *i* ]] && echo "Don't source this script!" && return 1
-version='0.4.10'
+version='0.4.11'
 # tldr-bash-client version 0.48
 # Bash client for tldr: community driven man-by-example
 # - forked from Ray Lee, https://github.com/raylee/tldr
@@ -215,7 +215,7 @@ Config(){
 		Err "tldr requires ${I}curl$XI or ${I}wget$XI installed in your path" &&
 		exit 3
 
-	repo_url='https://raw.githubusercontent.com/tldr-pages/tldr/master'
+	repo_url='https://raw.githubusercontent.com/tldr-pages/tldr/main'
 	zip_url='https://tldr.sh/assets/tldr.zip'
 
 	cachedir=$TLDR_CACHE_LOCATION
