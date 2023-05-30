@@ -326,7 +326,7 @@ Display_tldr(){
 				Out "$TNL$TSP$T${REPLY:2}$XT" ;;
 			'>') ((${#REPLY} <= 3)) && Unlinted "No valid desciption"
 				[[ ! ${REPLY:1:1} = ' ' ]] && Unlinted "2nd character no space"
-				[[ ! ${REPLY: -1} = '.' ]] && Unlinted "Description doesn't end in full stop"
+				[[ ! ${REPLY: -1} = '.' || ! ${REPLY: -1} = '。' ]] && Unlinted "Description doesn't end in full stop"
 				Out "$DNL$DSP$D${REPLY:2}$XD"
 				DNL= ;;
 			'-') ((newfmt)) && Unlinted "Bad first character"
