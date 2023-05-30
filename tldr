@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set +vx -o pipefail
 [[ $- = *i* ]] && echo "Don't source this script!" && return 1
-version='0.5.0'
-# tldr-bash-client version 0.48
+version='0.6.0'
+# tldr-bash-client version 0.6.0
 # Bash client for tldr: community driven man-by-example
 # - forked from Ray Lee, https://github.com/raylee/tldr
 # - modified and expanded by pepa65: https://gitlab.com/pepa65/tldr-bash-client
@@ -300,7 +300,7 @@ Display_tldr(){
 	ln=0 REPLY=
 	[[ $md ]] || md=$1
 	# Read full lines, and process even when no newline at the end
-	while read -r || [[ $REPLY ]]
+	while read -r -d '\x0a' || [[ $REPLY ]]
 	do
 		((++ln))
 		if ((ln==1))
@@ -325,7 +325,9 @@ Display_tldr(){
 				[[ ! ${REPLY:1:1} = ' ' ]] && Unlinted "2nd character no space"
 				Out "$TNL$TSP$T${REPLY:2}$XT" ;;
 			'>') ((${#REPLY} <= 3)) && Unlinted "No valid desciption"
+echo "$REPLY"
 				[[ ! ${REPLY:1:1} = ' ' ]] && Unlinted "2nd character no space"
+echo "${REPLY: -1}" |hexdump -C
 				[[ ! ${REPLY: -1} = '.' && ! ${REPLY: -1} = '。' ]] && Unlinted "Description doesn't end in full stop"
 				Out "$DNL$DSP$D${REPLY:2}$XD"
 				DNL= ;;
@@ -496,6 +498,7 @@ Main(){
 	((markdown)) && Out "$(cat "$cached")" || Display_tldr "$cached"
 }
 
+export LC_ALL=en_US.UTF-8
 Main "$@"
 # The exit trap will output the accumulated stdout
 exit 0
