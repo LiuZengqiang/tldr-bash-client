@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set +vx -o pipefail
 [[ $- = *i* ]] && echo "Don't source this script!" && return 1
-version='0.6.0'
-# tldr-bash-client version 0.6.0
+version='0.6.1'
+# tldr-bash-client v0.6.1
 # Bash client for tldr: community driven man-by-example
 # - forked from Ray Lee, https://github.com/raylee/tldr
 # - modified and expanded by pepa65: https://gitlab.com/pepa65/tldr-bash-client
@@ -296,11 +296,11 @@ Get_tldr(){
 
 # $1: file (optional); Uses: page stdout; Sets: ln REPLY
 Display_tldr(){
-	local newfmt len val
+	local newfmt len val reply
 	ln=0 REPLY=
 	[[ $md ]] || md=$1
 	# Read full lines, and process even when no newline at the end
-	while read -r -d '\x0a' || [[ $REPLY ]]
+	while read -r || [[ $REPLY ]]
 	do
 		((++ln))
 		if ((ln==1))
@@ -325,10 +325,9 @@ Display_tldr(){
 				[[ ! ${REPLY:1:1} = ' ' ]] && Unlinted "2nd character no space"
 				Out "$TNL$TSP$T${REPLY:2}$XT" ;;
 			'>') ((${#REPLY} <= 3)) && Unlinted "No valid desciption"
-echo "$REPLY"
 				[[ ! ${REPLY:1:1} = ' ' ]] && Unlinted "2nd character no space"
-echo "${REPLY: -1}" |hexdump -C
-				[[ ! ${REPLY: -1} = '.' && ! ${REPLY: -1} = '。' ]] && Unlinted "Description doesn't end in full stop"
+				reply=${REPLY//$'\n'}
+				[[ ! ${reply: -1} = '.' && ! ${reply: -1} = '。' ]] && Unlinted "Description doesn't end in full stop"
 				Out "$DNL$DSP$D${REPLY:2}$XD"
 				DNL= ;;
 			'-') ((newfmt)) && Unlinted "Bad first character"
@@ -357,7 +356,7 @@ echo "${REPLY: -1}" |hexdump -C
 				Out "$ENL$ESP$E$REPLY$XE" ;;
 		esac
 	done <"$1"
-	[[ $TLDR_LESS = 0 ]] && 
+	[[ $TLDR_LESS = 0 ]] &&
 		trap 'cat <<<"$stdout"' EXIT ||
 		trap 'less -Gg -~RXQFP"%pB\% tldr $I$page$XI - browse up/down, press Q to exit" <<<"$stdout"' EXIT
 }
