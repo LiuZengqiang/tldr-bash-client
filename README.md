@@ -1,6 +1,6 @@
 # tldr-bash-client
 
-* version 0.6.1
+* version 0.6.2
 
 ### Bash client for tldr: community driven man-by-example
 **A fully-functional [bash](https://tiswww.case.edu/php/chet/bash/bashtop.html)

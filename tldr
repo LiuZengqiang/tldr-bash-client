@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set +vx -o pipefail
 [[ $- = *i* ]] && echo "Don't source this script!" && return 1
-version='0.6.1'
-# tldr-bash-client v0.6.1
+version=0.6.2
+# tldr-bash-client v0.6.2
 # Bash client for tldr: community driven man-by-example
 # - forked from Ray Lee, https://github.com/raylee/tldr
 # - modified and expanded by pepa65: https://gitlab.com/pepa65/tldr-bash-client
@@ -182,7 +182,7 @@ Init_term(){
 }
 
 # $1: page
-Recent(){ [[ $(find "$1" -mtime -"$TLDR_EXPIRY") ]];}
+Recent(){ [[ $(find "$1" -mtime -"$TLDR_EXPIRY" 2>/dev/null) ]];}
 
 # Initialize globals, check the environment; Uses: config cachedir version
 # Sets: stdout os version dl pages
@@ -210,8 +210,8 @@ Config(){
 	ver="tldr-bash-client version $version$XB  ${URL}https://gitlab.com/pepa65/tldr-bash-client$XURL"
 
 	# Select download method
-	! dl="$(type -P curl) -sLfo" &&
-		! dl="$(type -P wget) --max-redirect=20 -qNO" &&
+	! dl="$(type -P curl) --connect-timeout 10 -sLfo" &&
+		! dl="$(type -P wget) --timeout=10 --max-redirect=20 -qNO" &&
 		Err "tldr requires ${I}curl$XI or ${I}wget$XI installed in your path" &&
 		exit 3
 
@@ -492,9 +492,21 @@ Main(){
 		Usage 27
 	[[ $platform = all ]] && platform=
 	Get_tldr "${page// /-}"
-[[ ! -s $cached ]] && Err "tldr page for command $I$page$XI not found" \
-			&& Inf "Contribute new pages at:$XB ${URL}https://github.com/tldr-pages/tldr$XURL" && exit 28
-	((markdown)) && Out "$(cat "$cached")" || Display_tldr "$cached"
+	if [[ -s $cached ]]
+	then # File present
+		((markdown)) && Out "$(cat "$cached")" || Display_tldr "$cached"
+	elif [[ ! $lang = en ]]
+	then # Not English and no file
+		pages=pages
+		Get_tldr "${page// /-}"
+		[[ -s $cached ]] &&
+			Err "tldr page for command $I$page$XI not found in '$lang' but found in English" &&
+			((markdown)) && Out "$(cat "$cached")" ||
+			Display_tldr "$cached"
+	else # Just not found
+			Err "tldr page for command $I$page$XI not found" &&
+				Inf "Contribute new pages at:$XB ${URL}https://github.com/tldr-pages/tldr$XURL" && exit 28
+	fi
 }
 
 export LC_ALL=en_US.UTF-8
